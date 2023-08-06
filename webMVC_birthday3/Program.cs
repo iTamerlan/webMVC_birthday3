@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+п»їusing Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -9,11 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// + Строка соединения
+// + РЎС‚СЂРѕРєР° СЃРѕРµРґРёРЅРµРЅРёСЏ
 //string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 string connection = "Server=(localdb)\\mssqllocaldb;Database=applicationdb2;Trusted_Connection=True;";
 
-// + добавляем контекст ApplicationContext в качестве сервиса в приложение
+// + РґРѕР±Р°РІР»СЏРµРј РєРѕРЅС‚РµРєСЃС‚ ApplicationContext РІ РєР°С‡РµСЃС‚РІРµ СЃРµСЂРІРёСЃР° РІ РїСЂРёР»РѕР¶РµРЅРёРµ
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
 //builder.Services.AddScoped<Service>(sp => new Service(sp.GetRequiredService<IOptions<ApiConfiguration>>().Value));
@@ -37,10 +37,10 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    //pattern: "{controller=Api}/{action=Users}"); // для тестов API
+    //pattern: "{controller=Api}/{action=Users}"); // РґР»СЏ С‚РµСЃС‚РѕРІ API
     pattern: "{controller=Home}/{action=Index}");
 
-// вынес в контроллер
+// РІС‹РЅРµСЃ РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂ
 //app.MapControllerRoute(name: "id_get", pattern: "{controller=api}/{action=users}/{id?:int}");
 
 app.Run();
@@ -65,15 +65,15 @@ public class ApplicationContext : DbContext
         : base(options)
     {
         //Database.EnsureDeleted();
-        Database.EnsureCreated();   // создаем базу данных при первом обращении
+        Database.EnsureCreated();   // СЃРѕР·РґР°РµРј Р±Р°Р·Сѓ РґР°РЅРЅС‹С… РїСЂРё РїРµСЂРІРѕРј РѕР±СЂР°С‰РµРЅРёРё
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasData(
-            // данные взяты случайные и ценности не несут
-                new User { Id = 1, Name = "Аня", Birthday = Convert.ToDateTime("2005-08-04"), Type = true , DayOfYear = Convert.ToDateTime("2005-08-04").DayOfYear },
-                new User { Id = 2, Name = "Светлана Ивановна", Birthday = Convert.ToDateTime("1974-12-31"), Type = false, DayOfYear = Convert.ToDateTime("1974-12-31").DayOfYear },
-                new User { Id = 3, Name = "дедушка", Birthday = Convert.ToDateTime("1937-01-15"), Type = true, DayOfYear = Convert.ToDateTime("1937-01-15").DayOfYear }
+            // РґР°РЅРЅС‹Рµ РІР·СЏС‚С‹ СЃР»СѓС‡Р°Р№РЅС‹Рµ Рё С†РµРЅРЅРѕСЃС‚Рё РЅРµ РЅРµСЃСѓС‚
+                new User { Id = 1, Name = "РђРЅСЏ", Birthday = Convert.ToDateTime("2005-08-04"), Type = true , DayOfYear = Convert.ToDateTime("2005-08-04").DayOfYear },
+                new User { Id = 2, Name = "РЎРІРµС‚Р»Р°РЅР° РРІР°РЅРѕРІРЅР°", Birthday = Convert.ToDateTime("1974-12-31"), Type = false, DayOfYear = Convert.ToDateTime("1974-12-31").DayOfYear },
+                new User { Id = 3, Name = "РґРµРґСѓС€РєР°", Birthday = Convert.ToDateTime("1937-01-15"), Type = true, DayOfYear = Convert.ToDateTime("1937-01-15").DayOfYear }
         );
     }
 }

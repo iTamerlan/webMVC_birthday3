@@ -1,14 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Eventing.Reader;
-using System.Threading.Tasks;
+using System.Net.NetworkInformation;
 using WebBirthdayMVC.Models;
+using webMVC_birthday3.Controllers;
 
 namespace WebBirthdayMVC.Controllers
 {
     public class ApiController : Controller
     {
+        private readonly ApplicationContext _context;
+        //private readonly ILogger<HomeController> _logger;
+
+        public ApiController(ApplicationContext context) //, ILogger<HomeController> logger)
+        {
+            //_logger = logger;
+            _context = context;
+        }
+
         // "/api/users" GET // весь список
         // "/api/users/{id:int}" GET // конкретный ID
         // "/api/users/{id:int}" DELETE // Удалить ID
@@ -17,33 +28,36 @@ namespace WebBirthdayMVC.Controllers
 
         // await Response.WriteAsync(content); JsonResult
         [HttpGet]
-        [Route("{id?:int}")]
-        public async Task<IActionResult> Users(int? id, ApplicationContext db)
+        public async Task<IActionResult> Test()
         {
-            if (id is null)
-            {
-                //return View();
-                DbSet<User> UsersTable = db.Users;
-                // Json(await UsersTable.OrderBy(p => p.Birthday).ToListAsync())
-                return (IActionResult)Task.FromResult(Json(await UsersTable.OrderBy(p => p.Birthday).ToListAsync()));
-                //.Take(5).OrderBy(p => p.DayOfYear) OrderBy(p => p.Birthday)
-            }
-            else
-            {
-                // получаем пользователя по id
-                User? user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+            
+            return Content("<h2>Hello METANIT.COM!</h2>");
+        }
 
-                // если не найден, отправляем статусный код и сообщение об ошибке
-                if (user == null) return (IActionResult)Results.NotFound(new { message = "Пользователь не найден" });
 
-                // если пользователь найден, отправляем его
-                return (IActionResult)Results.Json(user);
-            }
+        [HttpGet]
+        public async Task<IActionResult> Users(ApplicationContext db)
+        {
+            return (IActionResult)Results.Json(await db.Users.OrderBy(p => p.Birthday).ToListAsync());
+        }
+
+        [HttpGet]
+        [Route("{id:int}")]
+        public async Task<IActionResult> Users(int id, ApplicationContext db)
+        {
+            // получаем пользователя по id
+            User? user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
+
+            // если не найден, отправляем статусный код и сообщение об ошибке
+            if (user == null) return (IActionResult)Results.NotFound(new { message = "Пользователь не найден" });
+
+            // если пользователь найден, отправляем его
+            return (IActionResult)Results.Json(user);
         }
 
         [HttpDelete]
-        [Route("{id:int}")]
-        async public Task<IActionResult> Users(int id, ApplicationContext db) 
+        [Route("{id:int}/{status:int}")]
+        async public Task<IActionResult> Users(int status, int id, ApplicationContext db) 
         {
             // получаем пользователя по id
             User? user = await db.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -67,7 +81,7 @@ namespace WebBirthdayMVC.Controllers
         }
         [HttpPut]
         [Route("{id:int}")]
-        async public Task<IActionResult> Users(int? id, User userData, ApplicationContext db)
+        async public Task<IActionResult> Users(int id, User userData, ApplicationContext db)
         {
             // получаем пользователя по id
             var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userData.Id);

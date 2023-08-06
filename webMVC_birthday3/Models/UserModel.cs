@@ -27,7 +27,7 @@ namespace WebBirthdayMVC.Models
             }
             set
             {
-                this.DayOfYear = Birthday.DayOfYear;
+                DayOfYear = Birthday.DayOfYear;
             }                
         }
         //public decimal DayOfYear => Birthday.DayOfYear;

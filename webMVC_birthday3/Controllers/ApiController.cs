@@ -58,7 +58,6 @@ namespace WebBirthdayMVC.Controllers
         }
 
         [HttpPost]
-        [Route("add")]
         async public Task<IActionResult> Users(User user, ApplicationContext db)
         {
             // добавляем пользователя в массив
@@ -67,7 +66,8 @@ namespace WebBirthdayMVC.Controllers
             return (IActionResult)user;
         }
         [HttpPut]
-        async public Task<IActionResult> Users(User userData, ApplicationContext db)
+        [Route("{id:int}")]
+        async public Task<IActionResult> Users(int? id, User userData, ApplicationContext db)
         {
             // получаем пользователя по id
             var user = await db.Users.FirstOrDefaultAsync(u => u.Id == userData.Id);

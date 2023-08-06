@@ -23,6 +23,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.MapControllerRoute(name: "id_get", pattern: "{controller=api}/{action=users}/{id?}");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

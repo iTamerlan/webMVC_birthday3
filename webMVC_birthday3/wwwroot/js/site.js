@@ -9,6 +9,9 @@ var loadFile = function (event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
+function daysIntoYear(date) {
+    return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
+}
 
 // Получение всех пользователей
 async function getUsers() {
@@ -25,8 +28,14 @@ async function getUsers() {
         const users = await response.json();
         const rows = document.querySelector("tbody");
         // добавляем полученные элементы в таблицу
+        var now = daysIntoYear(new Date());
+        users.forEach((user, index, array) => {
+            if (user.dayOfYear < now) { user.dayOfYear += 366 }
+        });
         users.sort(function (a, b) {
-            return a.dayOfYear - b.dayOfYear;
+            if (a.dayOfYear > b.dayOfYear) return 1; // если первое значение больше второго
+            if (a.dayOfYear == b.dayOfYear) return 0; // если равны
+            if (a.dayOfYear < b.dayOfYear) return -1; // если первое значение меньше второго
         });
         //console.log(users);
 
@@ -37,8 +46,7 @@ async function getUsers() {
         if (searchParams.has("id")) {
             edituserid = searchParams.get("id");
         }
-        searchParams.get("page"); // 4
-
+        searchParams.get("page"); // 4        
         users.forEach(user => rows.append(row(user, edituserid)));
     }
 }
@@ -212,17 +220,16 @@ function getBase64(file) {
     }
     else {
         var reader = new FileReader();
-        var temp;
         reader.readAsDataURL(file);
 
-        reader.onloadend = function () { //reader.onload
-            temp = reader.result;
+        reader.onload = function () { //reader.onload
+            console.log(reader.result);
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
         };
         //console.log(temp);
-        return temp;
+        return reader.result;
     }
 }
 
@@ -237,21 +244,9 @@ if (document.getElementById("saveBtn") !== null) {
 
         //const photo = getBase64();
 
-        const fileInput = document.getElementById("userPhoto");
-        let tPhoto;
-        fileInput.addEventListener("change", e => {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
+        const fileInput = document.getElementById("userPhoto").files[0];
 
-            reader.addEventListener("load", () => {
-                // Base64 Data URL
-                tPhoto = reader.result;
-            });
-
-            reader.readAsDataURL(file);
-        });
-
-        const photo = tPhoto;
+        const photo = getBase64(fileInput);
 
         //document.getElementById("log2").innerHTML = photo;
 

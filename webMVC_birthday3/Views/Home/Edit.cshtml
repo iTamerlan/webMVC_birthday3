@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<div class="text-center" onload="getUsers();">
+    <h1 class="display-7">Список дней рождения</h1>
+    <p id="log2"></p>
+    <h2>Список пользователей</h2>
+    <div>
+        <input type="hidden" id="userId" />
+        <p>
+            Имя (ФИО):<br />
+            <input id="userName" />
+        </p>
+        <p>
+            День рождения:<br />
+            <input id="userBirthday" type="date" value="2000-01-01" />
+        </p>
+        <p>
+            Избранное:<br />
+            <input id="userType" type="checkbox" />
+        </p>
+        <p>
+            Фото:<br />
+            <img id="output" /><br />
+            <input id="userPhoto" type="file" src="/x.jpg" ; accept="image/jpeg" onchange="loadFile(event)" />
+
+        </p>
+        <p>
+            <button id="saveBtn">Сохранить</button>
+            <button id="resetBtn">Сбросить</button>
+        </p>
+    </div>
+    <table class="table table-striped">
+        <thead><tr><th>Фото</th><th>Имя</th><th>День рождения</th><th>Избранное</th><th></th></tr></thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>

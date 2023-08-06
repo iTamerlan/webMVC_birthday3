@@ -13,7 +13,8 @@ namespace WebBirthdayMVC.Models
         public DateTime Birthday { get; set; } // День рождения пользователя
         public bool Type { get; set; } // Важное?
         public string? Photo { get; set; } // Фото пользователя // Convert.FromBase64String (string s);
-        public int DayOfYear
+        public int DayOfYear { get; set; }
+        /*public int DayOfYear
         {
             get
             {
@@ -29,7 +30,7 @@ namespace WebBirthdayMVC.Models
             {
                 DayOfYear = Birthday.DayOfYear;
             }                
-        }
+        }*/
         //public decimal DayOfYear => Birthday.DayOfYear;
         /*[NotMapped]*/
     }

@@ -37,7 +37,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Api}/{action=Test}");
+    pattern: "{controller=Api}/{action=Users}");
 
 // вынес в контроллер
 //app.MapControllerRoute(name: "id_get", pattern: "{controller=api}/{action=users}/{id?:int}");
@@ -63,15 +63,15 @@ public class ApplicationContext : DbContext
     public ApplicationContext(DbContextOptions<ApplicationContext> options)
         : base(options)
     {
-        //Database.EnsureDeleted();
+        Database.EnsureDeleted();
         Database.EnsureCreated();   // создаем базу данных при первом обращении
     }
-    /*protected override void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasData(
-                new User { Id = 1, Name = "Аня", Birthday = Convert.ToDateTime("2005-08-04"), Type = true },
-                new User { Id = 2, Name = "Светлана Ивановна", Birthday = Convert.ToDateTime("1974-12-31"), Type = false },
-                new User { Id = 3, Name = "дедушка", Birthday = Convert.ToDateTime("1937-01-15"), Type = true }
+                new User { Id = 1, Name = "Аня", Birthday = Convert.ToDateTime("2005-08-04"), Type = true , DayOfYear = Convert.ToDateTime("2005-08-04").DayOfYear },
+                new User { Id = 2, Name = "Светлана Ивановна", Birthday = Convert.ToDateTime("1974-12-31"), Type = false, DayOfYear = Convert.ToDateTime("1974-12-31").DayOfYear },
+                new User { Id = 3, Name = "дедушка", Birthday = Convert.ToDateTime("1937-01-15"), Type = true, DayOfYear = Convert.ToDateTime("1937-01-15").DayOfYear }
         );
-    }*/
+    }
 }
